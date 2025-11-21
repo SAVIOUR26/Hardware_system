@@ -63,6 +63,8 @@ const createWindow = () => {
     // Load the app
     const indexPath = path.join(__dirname, '../dist/index.html');
     logToFile(`Loading index from: ${indexPath}`);
+    logToFile(`__dirname: ${__dirname}`);
+    logToFile(`Index exists: ${fs.existsSync(indexPath)}`);
 
     if (process.env.VITE_DEV_SERVER_URL) {
       mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
@@ -77,11 +79,19 @@ const createWindow = () => {
         return;
       }
       mainWindow.loadFile(indexPath);
+
+      // Open DevTools to see frontend errors (temporary for debugging)
+      mainWindow.webContents.openDevTools();
     }
 
     // Log any load errors
     mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
       logToFile(`Failed to load: ${errorCode} - ${errorDescription}`);
+    });
+
+    // Log console messages from renderer
+    mainWindow.webContents.on('console-message', (event, level, message, line, sourceId) => {
+      logToFile(`[Renderer Console] ${message} (${sourceId}:${line})`);
     });
 
     // Handle window close
