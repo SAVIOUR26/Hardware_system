@@ -38,8 +38,10 @@ function Sidebar() {
     <aside className="w-64 bg-card border-r border-border flex flex-col">
       {/* Logo/Company Name */}
       <div className="p-6 border-b border-border">
+        {/* Optional: Add your company logo here */}
+        {/* <img src="/logo.png" alt="Company Logo" className="h-12 mb-2" /> */}
         <h1 className="text-xl font-bold text-primary">Hardware Manager Pro</h1>
-        <p className="text-xs text-muted-foreground mt-1">Thirdsan Hardware</p>
+        <p className="text-xs text-muted-foreground mt-1">Stuti Hardware SMC Limited</p>
       </div>
 
       {/* Navigation */}

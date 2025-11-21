@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS companies (
 
 -- Insert default company
 INSERT OR IGNORE INTO companies (id, name, address, phone)
-VALUES (1, 'Thirdsan Hardware', 'Kampala, Uganda', '0200 991234');
+VALUES (1, 'Stuti Hardware SMC Limited', 'Kampala, Uganda', '0200 991234');
 
 -- ============================================================================
 -- USERS (For future multi-user support)

@@ -79,9 +79,6 @@ const createWindow = () => {
         return;
       }
       mainWindow.loadFile(indexPath);
-
-      // Open DevTools to see frontend errors (temporary for debugging)
-      mainWindow.webContents.openDevTools();
     }
 
     // Log any load errors

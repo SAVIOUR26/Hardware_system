@@ -148,7 +148,7 @@ export default function TallySync() {
               type="text"
               placeholder="Enter Tally company name"
               className="w-full px-3 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
-              defaultValue="Thirdsan Hardware"
+              defaultValue="Stuti Hardware SMC Limited"
             />
           </div>
           <div className="flex items-center gap-2">
