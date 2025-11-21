@@ -2,6 +2,7 @@ import Database from 'better-sqlite3';
 import { app } from 'electron';
 import path from 'path';
 import fs from 'fs';
+import { SCHEMA_SQL } from './schema';
 
 let db: Database.Database | null = null;
 
@@ -51,55 +52,17 @@ export function getDatabase(): Database.Database {
 
 /**
  * Initialize database schema
+ * Uses embedded schema SQL to avoid file reading issues in packaged apps
  */
 function initializeSchema(database: Database.Database): void {
   try {
-    // Read schema file - try multiple possible locations
-    const possiblePaths = [
-      // Development path
-      path.join(__dirname, 'schema.sql'),
-      // Production path (dist-electron/database/schema.sql)
-      path.join(__dirname, 'database', 'schema.sql'),
-      // Alternative production path
-      path.join(app.getAppPath(), 'dist-electron', 'database', 'schema.sql'),
-      // Unpacked resources path
-      path.join(process.resourcesPath, 'app.asar.unpacked', 'dist-electron', 'database', 'schema.sql'),
-      // Direct resources path
-      path.join(process.resourcesPath, 'database', 'schema.sql'),
-    ];
-
-    let schemaSQL: string | null = null;
-    let usedPath: string | null = null;
-
-    // Try each path until we find the schema file
-    for (const schemaPath of possiblePaths) {
-      try {
-        if (fs.existsSync(schemaPath)) {
-          schemaSQL = fs.readFileSync(schemaPath, 'utf-8');
-          usedPath = schemaPath;
-          console.log('Schema file found at:', schemaPath);
-          break;
-        }
-      } catch (err) {
-        // Path doesn't exist or can't be read, try next one
-        continue;
-      }
-    }
-
-    if (!schemaSQL) {
-      // Log all attempted paths for debugging
-      console.error('Schema file not found. Tried paths:');
-      possiblePaths.forEach(p => console.error('  -', p));
-      console.error('__dirname:', __dirname);
-      console.error('app.getAppPath():', app.getAppPath());
-      console.error('process.resourcesPath:', process.resourcesPath);
-      throw new Error('Schema file not found');
-    }
+    console.log('Initializing database schema...');
 
     // Execute schema (Better-SQLite3 supports multiple statements)
-    database.exec(schemaSQL);
+    // Using embedded schema SQL from schema.ts
+    database.exec(SCHEMA_SQL);
 
-    console.log('Schema initialized successfully from:', usedPath);
+    console.log('Schema initialized successfully (embedded schema)');
   } catch (error) {
     console.error('Failed to initialize schema:', error);
     throw error;
