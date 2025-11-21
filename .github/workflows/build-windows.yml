@@ -42,24 +42,49 @@ jobs:
 
       - name: List build outputs
         run: |
-          dir dist
+          Write-Host "Listing dist directory:"
+          Get-ChildItem -Path dist -ErrorAction Stop
+
+          Write-Host "`nChecking for win-unpacked directory:"
           if (Test-Path "dist\win-unpacked") {
-            dir dist\win-unpacked
+            Write-Host "✓ win-unpacked found"
+            Get-ChildItem -Path dist\win-unpacked | Select-Object -First 10
           } else {
-            Write-Error "win-unpacked directory not found!"
+            Write-Error "✗ win-unpacked directory not found!"
             exit 1
           }
         shell: powershell
 
       - name: Create portable ZIP
         run: |
-          if (Test-Path "dist\win-unpacked") {
-            cd dist
-            Compress-Archive -Path win-unpacked\* -DestinationPath hardware-manager-pro-windows-portable.zip -Force
-            Write-Host "ZIP created successfully"
-            dir hardware-manager-pro-windows-portable.zip
+          $sourcePath = "dist\win-unpacked"
+          $destPath = "dist\hardware-manager-pro-windows-portable.zip"
+
+          Write-Host "Source path: $sourcePath"
+          Write-Host "Destination path: $destPath"
+
+          if (Test-Path $sourcePath) {
+            Write-Host "Creating ZIP archive..."
+
+            # Remove existing ZIP if present
+            if (Test-Path $destPath) {
+              Remove-Item $destPath -Force
+              Write-Host "Removed existing ZIP"
+            }
+
+            # Create the archive using full path
+            Compress-Archive -Path "$sourcePath\*" -DestinationPath $destPath -CompressionLevel Optimal
+
+            # Verify ZIP was created
+            if (Test-Path $destPath) {
+              $zipSize = (Get-Item $destPath).Length / 1MB
+              Write-Host "✓ ZIP created successfully: $([math]::Round($zipSize, 2)) MB"
+            } else {
+              Write-Error "✗ ZIP file was not created!"
+              exit 1
+            }
           } else {
-            Write-Error "win-unpacked directory not found. Cannot create archive."
+            Write-Error "✗ Source directory not found: $sourcePath"
             exit 1
           }
         shell: powershell
