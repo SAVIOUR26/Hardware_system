@@ -25,6 +25,9 @@ import SuppliersIndex from '@/pages/suppliers/SuppliersIndex';
 // Reports
 import ReportsIndex from '@/pages/reports/ReportsIndex';
 
+// Tally
+import TallySync from '@/pages/tally/TallySync';
+
 // Settings
 import Settings from '@/pages/Settings';
 
@@ -64,6 +67,9 @@ function AppRouter() {
 
           {/* Reports */}
           <Route path="reports" element={<ReportsIndex />} />
+
+          {/* Tally Sync */}
+          <Route path="tally" element={<TallySync />} />
 
           {/* Settings */}
           <Route path="settings" element={<Settings />} />

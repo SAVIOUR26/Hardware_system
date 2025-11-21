@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/sales', icon: ShoppingCart, label: 'Sales' },
   { to: '/sales/not-taken', icon: PackageX, label: 'Not Taken', badge: '⭐' },
-  { to: '/purchase', icon: ShoppingBag, label: 'Purchase' },
+  { to: '/purchases', icon: ShoppingBag, label: 'Purchase' },
   { to: '/inventory', icon: Package, label: 'Inventory' },
   { to: '/customers', icon: Users, label: 'Customers' },
   { to: '/suppliers', icon: Truck, label: 'Suppliers' },
