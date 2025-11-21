@@ -47,10 +47,10 @@ jobs:
 
           Write-Host "`nChecking for win-unpacked directory:"
           if (Test-Path "dist\win-unpacked") {
-            Write-Host "✓ win-unpacked found"
+            Write-Host "[OK] win-unpacked found"
             Get-ChildItem -Path dist\win-unpacked | Select-Object -First 10
           } else {
-            Write-Error "✗ win-unpacked directory not found!"
+            Write-Error "[ERROR] win-unpacked directory not found!"
             exit 1
           }
         shell: powershell
@@ -78,13 +78,13 @@ jobs:
             # Verify ZIP was created
             if (Test-Path $destPath) {
               $zipSize = (Get-Item $destPath).Length / 1MB
-              Write-Host "✓ ZIP created successfully: $([math]::Round($zipSize, 2)) MB"
+              Write-Host "[SUCCESS] ZIP created successfully: $([math]::Round($zipSize, 2)) MB"
             } else {
-              Write-Error "✗ ZIP file was not created!"
+              Write-Error "[ERROR] ZIP file was not created!"
               exit 1
             }
           } else {
-            Write-Error "✗ Source directory not found: $sourcePath"
+            Write-Error "[ERROR] Source directory not found: $sourcePath"
             exit 1
           }
         shell: powershell
