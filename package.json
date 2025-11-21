@@ -64,5 +64,33 @@
     "concurrently": "^8.2.2",
     "wait-on": "^7.2.0",
     "tailwindcss-animate": "^1.0.7"
+  },
+  "build": {
+    "appId": "com.thirdsan.hardware-manager-pro",
+    "productName": "Hardware Manager Pro",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "dist-electron/database/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon.ico"
+    }
   }
 }
