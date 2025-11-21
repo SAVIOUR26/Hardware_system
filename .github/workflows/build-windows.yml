@@ -43,19 +43,32 @@ jobs:
       - name: List build outputs
         run: |
           dir dist
-          dir dist\win-unpacked
+          if (Test-Path "dist\win-unpacked") {
+            dir dist\win-unpacked
+          } else {
+            Write-Error "win-unpacked directory not found!"
+            exit 1
+          }
+        shell: powershell
 
       - name: Create portable ZIP
         run: |
-          cd dist
-          Compress-Archive -Path win-unpacked\* -DestinationPath hardware-manager-pro-${{ github.ref_name }}-windows-portable.zip
+          if (Test-Path "dist\win-unpacked") {
+            cd dist
+            Compress-Archive -Path win-unpacked\* -DestinationPath hardware-manager-pro-windows-portable.zip -Force
+            Write-Host "ZIP created successfully"
+            dir hardware-manager-pro-windows-portable.zip
+          } else {
+            Write-Error "win-unpacked directory not found. Cannot create archive."
+            exit 1
+          }
         shell: powershell
 
       - name: Upload Windows Portable ZIP
         uses: actions/upload-artifact@v4
         with:
           name: hardware-manager-pro-windows-portable
-          path: dist/hardware-manager-pro-${{ github.ref_name }}-windows-portable.zip
+          path: dist/hardware-manager-pro-windows-portable.zip
           retention-days: 30
 
       - name: Upload Windows Executable
@@ -78,7 +91,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            dist/hardware-manager-pro-${{ github.ref_name }}-windows-portable.zip
+            dist/hardware-manager-pro-windows-portable.zip
             dist/*.exe
           draft: false
           prerelease: false
